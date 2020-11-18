@@ -1,2 +1,2 @@
 # tomato-css
-Built-in themes
+Built-in themes from 2020.6 firmware
