@@ -4,9 +4,7 @@ name: Minify Workflow
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
-on:
-  push:
-    branches: [ main ]
+on: push
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -20,12 +18,17 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      - name: Auto Minify
+        uses: nizarmah/auto-minify@master
+        with:
+          directory: 'css'
+          output: 'dist'
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+      # Auto commits minified files to the repository
+      # Ignore it if you don't want to commit the files to the repository 
+      - name: Auto committing minified files
+        uses: stefanzweifel/git-auto-commit-action
+        with:
+          repository: 'dist'
+          commit_message: "Github Action: Auto Minified CSS files"
+          branch: ${{ github.ref }}
